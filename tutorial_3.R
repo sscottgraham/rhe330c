@@ -26,7 +26,7 @@ data %>%
 # View most common words excluding stop words
 data %>%
   unnest_tokens(word, Description) %>%
-  #USe anti_join() to remove stop words 
+  #Use anti_join() to remove stop words 
   anti_join(stop_words) %>%
   count(word, sort = TRUE) 
 
@@ -66,8 +66,8 @@ data %>%
   ggplot(aes(word, n, fill = Course)) +
   geom_col() +
   xlab(NULL) +
-  coord_flip()+
-  scale_x_reordered()+ # This must be added to fix issues with the labels created above. 
+  coord_flip() +
+  scale_x_reordered() +
   facet_wrap(~Course, ncol = 2, scales = "free_y")
 
 
@@ -99,13 +99,12 @@ data_word_n %>%
   group_by(Course) %>% 
   slice(1:5) %>%
   ungroup() %>%
-  #mutate(word = factor(word, levels = rev(unique(word)))) %>% This is replaced with the below to fix. 
   mutate(Course= as.factor(Course),
          word = reorder_within(word, tf_idf, Course)) %>%
   ggplot(aes(word, tf_idf, fill = Course)) +
   geom_col() +
   xlab(NULL) +
-  coord_flip()+
-  scale_x_reordered()+ # This must be added to fix issues with the labels created above. 
+  coord_flip() +
+  scale_x_reordered() +
   facet_wrap(~Course, ncol = 2, scales = "free_y")
 

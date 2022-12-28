@@ -1,6 +1,6 @@
-# Tutorial 6b: Feature Engineering - Custom Flags -------------------------
+# Tutorial 6a: Feature Engineering - Custom Flags -------------------------
 
-# This tutorial demonstrates how to use custom flag feature engineering. The approach counts the frequency of identified key words for use in subsequent machine learning. See Tutorial 7 for futher details.  
+# This tutorial demonstrates how to use custom flag feature engineering. The approach counts the frequency of identified key words for use in subsequent machine learning. See Tutorial 7 for further details.  
 
 # Pre-Flight --------------------------------------------------------------
 
@@ -21,16 +21,16 @@ flags <- read_csv("datasets/spam_features.csv", col_names = FALSE) %>%
 # Get features ------------------------------------------------------------
 
 # Get flag counts 
-data_features <-data %>% 
+data_features <- data %>% 
   mutate(!!!setNames(rep(NA, length(flags)), flags)) %>% 
   pivot_longer(cols = urgent:mobile,names_to="flags") %>% 
-  mutate(value = str_count(Message,flags)) %>% 
+  mutate(value = str_count(tolower(Message),flags)) %>% 
   pivot_wider(names_from = flags,values_from = value)
 
 
 # Create splits  ----------------------------------------------------------
 
-# Set seed to ensure reproducable samples. (Always set again before running the next line)
+# Set seed to ensure reproducible samples. (Always set again before running the next line)
 set.seed(2022)
 
 # Randomly select 80% of cases for the training set 

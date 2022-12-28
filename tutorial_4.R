@@ -1,6 +1,6 @@
 
 
-# Tutorial 4: Framgrams ---------------------------------------------------
+# Tutorial 4: Framegrams ---------------------------------------------------
 
 
 # This script is a basic framegram tutorial Framegram is a portmanteau of ngram and (linguistic) frame. The tutorial helps users explore the way COVID is framed in true and fake news tweets. 
@@ -11,7 +11,6 @@
 # Load libraries 
 library(tidyverse)
 library(tidytext)
-library(textstem)
 
 # Load data
 data <- read_csv("datasets/covid_fake_news.csv")
@@ -83,7 +82,6 @@ str_detect("chicken", "z")
 # Covid framegram 
 data %>%
   unnest_tokens(trigram, tweet, token = "ngrams", n=3) %>% 
-  #anti_join(stop_words) %>%
   count(trigram, sort = TRUE) %>%
   filter(str_detect(trigram,"covid")) %>% 
   filter(n > 10) %>% # note filter change
@@ -98,10 +96,9 @@ data %>%
 data %>%
   mutate(tweet_clean = str_remove_all(tweet, "19")) %>% # removes all 19s to eliminate "covid 19" problem
   unnest_tokens(trigram, tweet_clean, token = "ngrams", n=3) %>% 
-  #anti_join(stop_words) %>%
   count(trigram, sort = TRUE) %>%
-  filter(str_detect(trigram,"covid|COVID|corona|virus|Corona|SARS|COV")) %>% 
-  filter(n > 10) %>% # note filter change
+  filter(str_detect(trigram,"cov|corona|virus|sars")) %>% 
+  filter(n > 10) %>% 
   mutate(trigram = reorder(trigram, n)) %>%
   ggplot(aes(x=trigram, y=n)) +
   geom_col() +
@@ -127,13 +124,12 @@ paste(stop_words$word, collapse = "|")
 
 # Remove double stopword framegrams 
 data %>%
-  mutate(tweet_clean = str_remove_all(tweet, "19")) %>% # removes all 19s to eliminate "covid 19" problem
+  mutate(tweet_clean = str_remove_all(tweet, "19")) %>% 
   unnest_tokens(trigram, tweet_clean, token = "ngrams", n=3) %>% 
-  #anti_join(stop_words) %>%
   count(trigram, sort = TRUE) %>%
-  filter(str_detect(trigram,"covid|COVID|corona|virus|Corona|SARS|COV")) %>% 
+  filter(str_detect(trigram,"cov|corona|virus|sars")) %>% 
   filter(str_count(trigram,paste(stop_words$word, collapse = "|")) < 2) %>%
-  filter(n > 10) %>% # note filter change
+  filter(n > 10) %>% 
   mutate(trigram = reorder(trigram, n)) %>%
   ggplot(aes(x=trigram, y=n)) +
   geom_col() +
@@ -146,7 +142,7 @@ str_count("coronavirus",paste(stop_words$word, collapse = "|"))
 
 str_count("coronavirus","or")
 
-str_count("finance","\\bor\\b") # \\b = word boundary
+str_count("coronavirus","\\bor\\b") # \\b = word boundary
 
 stop_words_bounded <- paste0("\\b", stop_words$word, "\\b", collapse = "|")
 
@@ -154,13 +150,13 @@ str_count("coronavirus", stop_words_bounded)
 
 # Remove double stopword framegrams 
 data %>%
-  mutate(tweet_clean = str_remove_all(tweet, "19")) %>% # removes all 19s to eliminate "covid 19" problem
+  mutate(tweet_clean = str_remove_all(tweet, "19")) %>%
   unnest_tokens(trigram, tweet_clean, token = "ngrams", n=3) %>% 
   #anti_join(stop_words) %>%
   count(trigram, sort = TRUE) %>%
-  filter(str_detect(trigram,"covid|COVID|corona|virus|Corona|SARS|COV")) %>% 
+  filter(str_detect(trigram,"cov|corona|virus|sars")) %>% 
   filter(str_count(trigram,stop_words_bounded) < 2) %>%
-  filter(n > 10) %>% # note filter change
+  filter(n > 10) %>% 
   mutate(trigram = reorder(trigram, n)) %>%
   ggplot(aes(x=trigram, y=n)) +
   geom_col() +

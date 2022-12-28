@@ -1,5 +1,5 @@
 
-# Tutorial 6a: Feature Engineeering- Word2Vec -----------------------------
+# Tutorial 6b: Feature Engineering- Word2Vec -----------------------------
 
 # This tutorial demonstrates how to extract document-level word embeddings for subsequent text classification. (See Tutorial 7 for further details.) 
 
@@ -15,7 +15,7 @@ data <- read_csv("datasets/spam_ham.csv") %>%
 
 # Create splits  ----------------------------------------------------------
 
-# Set seed to ensure reproducable samples. (Always set again before running the next line)
+# Set seed to ensure reproducible samples. (Always set again before running the next line)
 set.seed(2022)
 
 # Randomly select 80% of cases for the training set 
@@ -31,22 +31,22 @@ test_set <- data %>% anti_join(train_set, by="id")
 train_model <- word2vec(train_set$Message)
 
 # Get train set embeddings 
-train_embeddigns <- doc2vec(train_model, train_set$Message) %>% 
+train_embeddings <- doc2vec(train_model, train_set$Message) %>% 
   data.frame() %>% 
   bind_cols(train_set) %>% 
   filter(complete.cases(.))
 
 # Write out training data 
-saveRDS(train_embeddigns, "spam_train_w2v.RDS")
+saveRDS(train_embeddings, "spam_train_w2v.RDS")
 
 # Create test set model 
 test_model <- word2vec(test_set$Message)
 
 # Get test set embeddings 
-test_embeddigns <- doc2vec(test_model, test_set$Message) %>% 
+test_embeddings <- doc2vec(test_model, test_set$Message) %>% 
   data.frame() %>% 
   bind_cols(test_set) %>% 
   filter(complete.cases(.))
 
 # Write out training data 
-saveRDS(test_embeddigns, "spam_test_w2v.RDS")
+saveRDS(test_embeddings, "spam_test_w2v.RDS")

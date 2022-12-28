@@ -67,4 +67,3 @@ data_covid %>%
   pivot_wider(names_from = covid,values_from=n,names_prefix="covid_") %>% 
   mutate(n=covid_0+covid_1,
          covid_percent = (covid_1/n)*100)
-

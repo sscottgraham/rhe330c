@@ -36,7 +36,7 @@ my_control <- trainControl(## 5-fold CV
   classProbs = TRUE,
   summaryFunction = twoClassSummary)
 
-# Fit neural network model 
+# Fit KNN model 
 knnFit <- train(label ~ ., 
                 data = train_set,
                 method = "knn",

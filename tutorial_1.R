@@ -117,7 +117,7 @@ stem_strings(sentence2) #See no "texstem::" required.
 
 
 # Combo Moves -------------------------------------------------------------
-# As mentioned in the lecture, R lets you create combo verbs by nesting them. 
+# R lets you create combo verbs by nesting them. 
 
 # Stem sentence1 and find out how many characters are in the stem. 
 nchar(stem_strings(sentence2))
